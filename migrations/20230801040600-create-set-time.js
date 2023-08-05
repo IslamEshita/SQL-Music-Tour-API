@@ -17,6 +17,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      band_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       start_time: {
         type: Sequelize.DATE,
         allowNull: false,

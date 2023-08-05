@@ -1,19 +1,26 @@
-// DEPENDENCIES
+// Dependencies
 const bandsRouter = require("express").Router();
 const allDBModels = require("../models");
 const { Band: BandModel } = allDBModels;
+const { Op } = require("sequelize");
 
+// Find all bands
 // FIND ALL BANDS
 bandsRouter.get("/", async (req, res) => {
   try {
-    const foundBands = await BandModel.findAll();
+    const foundBands = await BandModel.findAll({
+      order: [["available_start_time", "ASC"]],
+      where: {
+        name: { [Op.like]: `%${req.query.name ? req.query.name : ""}%` },
+      },
+    });
     res.status(200).json(foundBands);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-// FIND A SPECIFIC BAND
+// Find a specific band
 bandsRouter.get("/:id", async (req, res) => {
   try {
     const foundBand = await BandModel.findOne({
@@ -25,7 +32,7 @@ bandsRouter.get("/:id", async (req, res) => {
   }
 });
 
-// CREATE A BAND
+// Create a band
 bandsRouter.post("/", async (req, res) => {
   try {
     const newBand = await BandModel.create(req.body);
@@ -38,7 +45,7 @@ bandsRouter.post("/", async (req, res) => {
   }
 });
 
-// UPDATE A BAND
+// Update a band
 bandsRouter.put("/:id", async (req, res) => {
   try {
     const updatedBands = await BandModel.update(req.body, {
@@ -54,7 +61,7 @@ bandsRouter.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE A BAND
+// Delete a band
 bandsRouter.delete("/:id", async (req, res) => {
   try {
     const deletedBands = await BandModel.destroy({

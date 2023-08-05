@@ -19,7 +19,15 @@ app.get("/", (req, res) => {
 const bandsController = require("./controllers/bands_controller");
 app.use("/bands", bandsController);
 
-// LISTEN
+// Event Route
+const eventsController = require("./controllers/events_controller");
+app.use("/events", eventsController);
+
+// Stage Route
+const stagesController = require("./controllers/stages_controller");
+app.use("/stages", stagesController);
+
+// Listen
 app.listen(process.env.PORT, () => {
   console.log(`Music Tour Server 🎸 Rockin' on port: ${process.env.PORT}`);
 });
