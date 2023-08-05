@@ -1,11 +1,14 @@
 // Dependencies
 const bandsRouter = require("express").Router();
 const allDBModels = require("../models");
-const { Band: BandModel } = allDBModels;
+const {
+  Band: BandModel,
+  MeetGreet: MeetGreetModel,
+  Event: EventModel,
+} = allDBModels;
 const { Op } = require("sequelize");
 
 // Find all bands
-// FIND ALL BANDS
 bandsRouter.get("/", async (req, res) => {
   try {
     const foundBands = await BandModel.findAll({
@@ -20,11 +23,16 @@ bandsRouter.get("/", async (req, res) => {
   }
 });
 
-// Find a specific band
+// Find a specific band by name
 bandsRouter.get("/:name", async (req, res) => {
   try {
     const foundBand = await BandModel.findOne({
-      where: { band_id: req.params.name },
+      where: { name: req.params.name },
+      include: {
+        model: MeetGreetModel,
+        as: "meet_greets",
+        include: { model: EventModel, as: "event" },
+      },
     });
     res.status(200).json(foundBand);
   } catch (error) {
