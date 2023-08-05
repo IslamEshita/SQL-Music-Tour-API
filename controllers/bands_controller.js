@@ -33,12 +33,28 @@ bandsRouter.get("/:name", async (req, res) => {
         {
           model: MeetGreetModel,
           as: "meet_greets",
-          include: { model: EventModel, as: "event" },
+          include: {
+            model: EventModel,
+            as: "event",
+            where: {
+              name: {
+                [Op.like]: `%${req.query.event ? req.query.event : ""}%`,
+              },
+            },
+          },
         },
         {
           model: SetTimeModel,
           as: "set_times",
-          include: { model: EventModel, as: "event" },
+          include: {
+            model: EventModel,
+            as: "event",
+            where: {
+              name: {
+                [Op.like]: `%${req.query.event ? req.query.event : ""}%`,
+              },
+            },
+          },
         },
       ],
     });
