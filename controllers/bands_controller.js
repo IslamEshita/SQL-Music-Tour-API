@@ -21,10 +21,10 @@ bandsRouter.get("/", async (req, res) => {
 });
 
 // Find a specific band
-bandsRouter.get("/:id", async (req, res) => {
+bandsRouter.get("/:name", async (req, res) => {
   try {
     const foundBand = await BandModel.findOne({
-      where: { band_id: req.params.id },
+      where: { band_id: req.params.name },
     });
     res.status(200).json(foundBand);
   } catch (error) {
