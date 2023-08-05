@@ -5,6 +5,7 @@ const {
   Band: BandModel,
   MeetGreet: MeetGreetModel,
   Event: EventModel,
+  SetTime: SetTimeModel,
 } = allDBModels;
 const { Op } = require("sequelize");
 
@@ -28,11 +29,18 @@ bandsRouter.get("/:name", async (req, res) => {
   try {
     const foundBand = await BandModel.findOne({
       where: { name: req.params.name },
-      include: {
-        model: MeetGreetModel,
-        as: "meet_greets",
-        include: { model: EventModel, as: "event" },
-      },
+      include: [
+        {
+          model: MeetGreetModel,
+          as: "meet_greets",
+          include: { model: EventModel, as: "event" },
+        },
+        {
+          model: SetTimeModel,
+          as: "set_times",
+          include: { model: EventModel, as: "event" },
+        },
+      ],
     });
     res.status(200).json(foundBand);
   } catch (error) {
