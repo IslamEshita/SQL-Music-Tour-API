@@ -14,10 +14,10 @@ stagesRouter.get("/", async (req, res) => {
 });
 
 // Find a specific event
-stagesRouter.get("/:id", async (req, res) => {
+stagesRouter.get("/:name", async (req, res) => {
   try {
     const foundStages = await StageModel.findOne({
-      where: { stage_id: req.params.id },
+      where: { name: req.params.name },
     });
     res.status(200).json(foundStages);
   } catch (error) {
