@@ -1,7 +1,14 @@
 // Dependencies
 const eventsRouter = require("express").Router();
 const allDBModels = require("../models");
-const { Event: EventModel } = allDBModels;
+const {
+  Band: BandModel,
+  MeetGreet: MeetGreetModel,
+  Event: EventModel,
+  SetTime: SetTimeModel,
+  Stage: StageModel,
+  StageEvent: StageEventModel,
+} = allDBModels;
 
 // Find all events
 eventsRouter.get("/", async (req, res) => {
@@ -18,6 +25,31 @@ eventsRouter.get("/:name", async (req, res) => {
   try {
     const foundEvent = await EventModel.findOne({
       where: { name: req.params.name },
+      include: [
+        {
+          model: MeetGreetModel,
+          as: "meet_greets",
+          include: {
+            model: BandModel,
+            as: "band",
+            attributes: ["name"],
+          },
+        },
+        {
+          model: SetTimeModel,
+          as: "set_times",
+          include: [
+            {
+              model: BandModel,
+              as: "band",
+            },
+            {
+              model: StageModel,
+              as: "stage",
+            },
+          ],
+        },
+      ],
     });
     res.status(200).json(foundEvent);
   } catch (error) {
