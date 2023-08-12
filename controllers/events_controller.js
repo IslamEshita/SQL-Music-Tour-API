@@ -14,10 +14,10 @@ eventsRouter.get("/", async (req, res) => {
 });
 
 // Find a specific event
-eventsRouter.get("/:id", async (req, res) => {
+eventsRouter.get("/:name", async (req, res) => {
   try {
     const foundEvent = await EventModel.findOne({
-      where: { event_id: req.params.id },
+      where: { name: req.params.name },
     });
     res.status(200).json(foundEvent);
   } catch (error) {
