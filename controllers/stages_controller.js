@@ -1,7 +1,11 @@
 // Dependencies
 const stagesRouter = require("express").Router();
 const allDBModels = require("../models");
-const { Stage: StageModel } = allDBModels;
+const {
+  Event: EventModel,
+  Stage: StageModel,
+  StageEvent: StageEventModel,
+} = allDBModels;
 
 // Find all stages
 stagesRouter.get("/", async (req, res) => {
